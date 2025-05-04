@@ -63,11 +63,10 @@ git submodule update --init --recursive
 - Create Conda env:
 
 ``` sh
-conda create -n cosyvoice -y python=3.10
+conda create -n cosyvoice -y python=3.12 -y
 conda activate cosyvoice
 # pynini is required by WeTextProcessing, use conda to install it as it can be executed on all platform.
-conda install -y -c conda-forge pynini==2.1.5
-pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host=mirrors.aliyun.com
+pip install -r requirements.txt
 
 # If you encounter sox compatibility issues
 # ubuntu
