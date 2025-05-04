@@ -101,7 +101,7 @@ class CosyVoiceModel:
         return {'min_shape': min_shape, 'opt_shape': opt_shape, 'max_shape': max_shape, 'input_names': input_names}
 
     def llm_job(self, text, prompt_text, llm_prompt_speech_token, llm_embedding, uuid):
-        with self.llm_context, torch.cuda.amp.autocast(self.fp16):
+        with self.llm_context, torch.amp.autocast('cuda',torch.float16 if self.fp16 else torch.float32):
             if isinstance(text, Generator):
                 assert isinstance(self, CosyVoice2Model), 'streaming input text is only implemented for CosyVoice2!'
                 for i in self.llm.inference_bistream(text=text,
@@ -304,7 +304,7 @@ class CosyVoice2Model(CosyVoiceModel):
         return {'min_shape': min_shape, 'opt_shape': opt_shape, 'max_shape': max_shape, 'input_names': input_names}
 
     def token2wav(self, token, prompt_token, prompt_feat, embedding, uuid, finalize=False, speed=1.0):
-        with torch.cuda.amp.autocast(self.fp16):
+        with torch.amp.autocast("cuda", torch.float16 if self.fp16 else torch.float32):
             tts_mel, self.flow_cache_dict[uuid] = self.flow.inference(token=token.to(self.device),
                                                                       token_len=torch.tensor([token.shape[1]], dtype=torch.int32).to(self.device),
                                                                       prompt_token=prompt_token.to(self.device),

@@ -65,8 +65,27 @@ git submodule update --init --recursive
 ``` sh
 conda create -n cosyvoice -y python=3.12 -y
 conda activate cosyvoice
-# pynini is required by WeTextProcessing, use conda to install it as it can be executed on all platform.
+pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu128
+# or
+pip install --pre torch torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
 pip install -r requirements.txt
+
+# If you encounter sox compatibility issues
+# ubuntu
+sudo apt-get install sox libsox-dev
+# centos
+sudo yum install sox sox-devel
+```
+
+- for windows user:
+
+``` sh
+conda create -n cosyvoice -y python=3.12 -y
+conda activate cosyvoice
+conda install pynini -c conda-forge
+pip install WeTextProcessing --no-deps
+pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu128
+pip install -r requirements_win.txt
 
 # If you encounter sox compatibility issues
 # ubuntu
@@ -78,6 +97,12 @@ sudo yum install sox sox-devel
 **Model download**
 
 We strongly recommend that you download our pretrained `CosyVoice2-0.5B` `CosyVoice-300M` `CosyVoice-300M-SFT` `CosyVoice-300M-Instruct` model and `CosyVoice-ttsfrd` resource.
+
+```shell
+mkdir -p pretrained_models
+pip install modelscope
+modelscope download --model iic/CosyVoice2-0.5B --local_dir pretrained_models/CosyVoice2-0.5B
+```
 
 ``` python
 # SDK模型下载
